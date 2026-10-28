@@ -6,5 +6,6 @@
 .body{margin-top:44px;border-top:1px solid #cdbfa7}
 .body h2{font-size:26px;margin:40px 0 12px}
 .body p,.body li{color:#3f3b34;font-size:17px;line-height:1.7}
+.body p + p{margin-top:14px}
 .body ul{margin:12px 0 0 20px;display:grid;gap:8px}
 .body a{color:var(--forest);font-weight:600;text-decoration:underline;text-underline-offset:3px}

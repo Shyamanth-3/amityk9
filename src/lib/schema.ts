@@ -9,7 +9,7 @@ export const business = () => ({
   "@id": ORG_ID,
   name: NAME,
   url: SITE_URL,
-  image: `${SITE_URL}/opengraph-image`,
+  image: `${SITE_URL}/opengraph-image.jpg`,
   logo: `${SITE_URL}/icon.svg`,
   telephone: PHONE,
   description: "Pet walking and pet sitting inside gated communities in Hyderabad, Monday to Saturday, with a photo update after every visit.",

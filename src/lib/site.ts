@@ -1,5 +1,5 @@
-// Single source of truth for business facts. Change SITE_URL before launch.
-export const SITE_URL = "https://amityk9.in";
+// Single source of truth for business facts. Switch SITE_URL to the real domain once it's connected in Vercel.
+export const SITE_URL = "https://amityk9.vercel.app";
 export const NAME = "AmityK9";
 export const PHONE = "+919347692474";
 export const PHONE_DISPLAY = "93476 92474";
@@ -8,7 +8,7 @@ export const PHONE_DISPLAY = "93476 92474";
 // (including the image: child pages that set openGraph otherwise lose app/opengraph-image)
 export const OG = {
   type: "website", siteName: NAME, locale: "en_IN",
-  images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "AmityK9: pet walking and sitting in Hyderabad's gated communities" }],
+  images: [{ url: "/opengraph-image.jpg", width: 1200, height: 630, alt: "AmityK9: pet walking and sitting in Hyderabad's gated communities" }],
 };
 
 export const wa =(text?: string) =>
