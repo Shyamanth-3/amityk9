@@ -1,0 +1,9 @@
+.band{background:var(--forest);color:var(--cream);overflow:hidden;padding:22px 0;position:relative;z-index:2}
+.track{display:flex;width:max-content;animation:slide 38s linear infinite}
+.band:hover .track{animation-play-state:paused}
+.row{display:flex;list-style:none}
+.row li{font-family:var(--serif);font-style:italic;font-size:26px;font-weight:380;display:flex;align-items:center;gap:34px;padding-right:34px;letter-spacing:-.01em;white-space:nowrap}
+.row svg{width:18px;height:18px;fill:currentColor;opacity:.7}
+@keyframes slide{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.track{animation:none}}
+@media (max-width:640px){.band{padding:16px 0}.row li{font-size:20px;gap:24px;padding-right:24px}}

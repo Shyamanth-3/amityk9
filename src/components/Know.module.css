@@ -1,0 +1,35 @@
+.know{padding:110px 0}
+.grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:90px}
+.h2{margin:20px 0 40px}
+.week{background:var(--paper);border:1px solid var(--line);border-radius:26px;padding:30px 30px 26px}
+.row{display:grid;grid-template-columns:repeat(7,1fr);gap:10px}
+.d{border:0;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:10px;padding:0}
+.d span{width:100%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-weight:600;font-size:15px;background:var(--forest);color:var(--cream);transition:transform .35s cubic-bezier(.2,.7,.2,1),background .3s}
+.d small{font-size:12px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.off span{background:transparent;border:1.5px dashed #c9b99d;color:#a99a80}
+.on span{transform:translateY(-5px) scale(1.06);background:var(--rust)}
+.off.on span{background:var(--rust-soft);color:var(--rust);border-color:var(--rust)}
+.on small{color:var(--ink);font-weight:600}
+.week p{margin-top:22px;padding-top:18px;border-top:1px solid var(--line);font-size:15.5px;color:#4b463e;display:flex;gap:14px;align-items:center;min-height:68px}
+.z{font-family:var(--hand);font-size:26px;color:var(--rust);line-height:1;width:52px;flex:none}
+.msg{animation:fade .4s ease-out}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}}
+
+.facts{border-top:1px solid #cdbfa7}
+.fact{display:grid;grid-template-columns:180px 1fr auto;gap:30px;padding:28px 0;border-bottom:1px solid var(--line);align-items:baseline;transition:padding .4s}
+.fact:hover{padding-left:10px}
+.fact dt{font-family:var(--serif);font-weight:500;font-size:22px;letter-spacing:-.01em}
+.fact dd{color:#4b463e;font-size:16px}
+.fact .v{font-family:var(--serif);font-size:26px;color:var(--rust);font-weight:450;letter-spacing:-.02em;white-space:nowrap}
+.v small{font-family:var(--sans);font-size:14px;color:var(--muted);letter-spacing:0;font-weight:400}
+
+@media (prefers-reduced-motion:reduce){.msg{animation:none}}
+@media (max-width:1100px){.grid{gap:50px}.fact{grid-template-columns:1fr auto;gap:6px 20px}.fact dd:not(.v){grid-column:1/-1;grid-row:2}}
+@media (max-width:900px){.know{padding:80px 0}.grid{grid-template-columns:1fr;gap:56px}}
+@media (max-width:640px){
+  .week{padding:22px 16px 18px}
+  .row{gap:6px}
+  .d small{font-size:10px}
+  .d span{font-size:13.5px}
+  .fact .v{font-size:22px}
+}

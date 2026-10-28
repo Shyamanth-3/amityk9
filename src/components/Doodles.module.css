@@ -1,0 +1,21 @@
+/* faint ink: sits behind content, never catches clicks */
+.doodle{position:absolute;z-index:-1;pointer-events:none;fill:none;stroke:var(--forest);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;opacity:.34;overflow:visible}
+.fill{fill:var(--forest);stroke:none}
+.paw{fill:var(--rust);stroke:none;opacity:.6}
+
+/* placements, one class per spot */
+/* the dog stands on the leash: the leash crosses at the Services section's bottom edge, and the
+   dog's feet (y 116 of a 130-tall viewBox) are pulled down onto it: 14/240 of its width */
+.servicesDog{--w:min(300px,30vw);right:max(var(--gutter),calc(50% - 640px));bottom:calc(var(--w) * -14 / 240);width:var(--w)}
+@media (min-width:900px){.ground{display:none}}
+/* margin pieces sit on the side the leash isn't using in that section */
+.servicesSprig{left:max(-20px,calc(50% - 860px));bottom:90px;width:110px;transform:rotate(-12deg)}
+.knowCat{left:max(var(--gutter),calc(50% - 560px));bottom:40px;width:min(220px,36vw)}
+.plansCharminar{left:max(-10px,calc(50% - 900px));top:40px;width:150px}
+.faqTrail{left:max(var(--gutter),calc(50% - 560px));top:440px;width:150px}
+.updatesSprig{right:max(-30px,calc(50% - 900px));top:80px;width:100px;transform:scaleX(-1) rotate(-14deg)}
+
+/* the far-margin pieces only where there's a margin to fill */
+@media (max-width:1500px){.servicesSprig,.plansCharminar,.updatesSprig{display:none}}
+@media (max-width:900px){.knowCat,.faqTrail{display:none}.servicesDog{--w:150px;bottom:8px}}
+@media (max-width:640px){.doodle{display:none}}

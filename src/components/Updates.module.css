@@ -1,0 +1,55 @@
+.updates{padding:110px 0 120px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.h2{margin:20px 0 26px}
+.intro{font-size:18px;color:#4b463e;max-width:480px}
+.steps{margin-top:42px;max-width:500px;list-style:none}
+.steps li{display:grid;grid-template-columns:54px 1fr;gap:14px;padding:20px 0;border-top:1px solid var(--line)}
+.steps li:last-child{border-bottom:1px solid var(--line)}
+.t{font-family:var(--serif);font-style:italic;color:var(--rust);font-size:19px;padding-top:1px}
+.steps b{display:block;font-weight:600;font-size:17px;margin-bottom:2px}
+.steps li span:not(.t){color:var(--muted);font-size:15.5px}
+
+.phoneWrap{display:flex;justify-content:center;position:relative}
+.phoneWrap::before{content:"";position:absolute;width:520px;height:520px;max-width:120%;aspect-ratio:1;border-radius:50%;background:var(--leaf);top:50%;left:50%;transform:translate(-50%,-50%);opacity:.8}
+.phone{position:relative;width:340px;height:690px;background:#16171a;border-radius:54px;padding:12px;box-shadow:0 0 0 1.5px #2b2c30 inset,0 40px 80px -30px rgba(18,49,36,.55),0 20px 40px -20px rgba(0,0,0,.35)}
+.screen{width:100%;height:100%;border-radius:43px;overflow:hidden;background:#EEE6D8;display:flex;flex-direction:column;position:relative}
+.island{position:absolute;top:11px;left:50%;width:100px;height:28px;margin-left:-50px;background:#000;border-radius:20px;z-index:3}
+.sb{height:48px;display:flex;justify-content:space-between;align-items:flex-end;padding:0 28px 6px;font-size:14px;font-weight:600;background:#F7F2E8;color:#111}
+.sb i{display:flex;gap:5px;align-items:center}
+.sb i span{display:block;width:3px;background:#111;border-radius:2px}
+.sb i .batt{width:22px;height:11px;border-radius:3px;margin-left:4px}
+.chatH{display:flex;align-items:center;gap:11px;padding:10px 16px 12px;background:#F7F2E8;border-bottom:1px solid #e3d9c6}
+.av{width:38px;height:38px;border-radius:50%;background:var(--forest);display:grid;place-items:center}
+.av svg{width:20px;height:20px;fill:var(--cream)}
+.chatH b{font-size:15.5px;display:block;line-height:1.2}
+.chatH span{font-size:12.5px;color:#4f7d64}
+.msgs{flex:1;min-height:0;overflow:hidden;padding:16px 12px;display:flex;flex-direction:column;gap:8px;font-size:14.5px;line-height:1.38;
+  background-image:radial-gradient(rgba(120,100,70,.08) 1px,transparent 1.2px);background-size:16px 16px}
+.day{align-self:center;font-size:11.5px;background:#fff9;padding:3px 10px;border-radius:8px;color:#6b6457;margin-bottom:4px}
+.bub{max-width:82%;padding:8px 11px 6px;border-radius:14px;position:relative;box-shadow:0 1px 1px rgba(0,0,0,.06)}
+.in{background:#fff;align-self:flex-start;border-top-left-radius:4px}
+.out{background:#D7EDCF;align-self:flex-end;border-top-right-radius:4px}
+.tm{font-size:10.5px;color:#8a8478;float:right;margin:6px 0 -2px 10px;display:flex;align-items:center;gap:3px}
+.tm svg{width:15px;height:10px}
+.photo{padding:4px 4px 6px}
+.photo img{width:210px;height:150px;object-fit:cover;object-position:40% 50%;border-radius:11px}
+.photo p{padding:6px 7px 0}
+/* typing dots only exist while the chat animates */
+.typing{background:#fff;align-self:flex-start;border-radius:14px;border-top-left-radius:4px;padding:11px 14px;display:none;gap:4px}
+.typing i{width:7px;height:7px;border-radius:50%;background:#b3ab9d;display:block}
+.compose{height:62px;background:#F7F2E8;display:flex;align-items:center;gap:8px;padding:0 12px 10px}
+.compose div{flex:1;height:38px;border-radius:20px;background:#fff;font-size:14px;color:#a39c8f;display:flex;align-items:center;padding:0 14px}
+.compose span{width:38px;height:38px;border-radius:50%;background:var(--forest);display:grid;place-items:center}
+
+@media (max-width:1100px){.grid{gap:40px}}
+@media (max-width:900px){
+  .updates{padding:80px 0 90px}
+  .grid{grid-template-columns:1fr;gap:64px}
+  .phoneWrap::before{width:110%;height:auto}
+}
+@media (max-width:640px){
+  .intro{font-size:17px}
+  .phone{width:310px;height:630px;border-radius:50px}
+  .screen{border-radius:39px}
+  .photo img{width:190px;height:120px}
+}

@@ -1,0 +1,47 @@
+.services{padding:140px 0 160px} /* room under the cards for the line-art dog standing on the leash */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:28px;perspective:1400px}
+.svc{border-radius:28px;padding:40px 42px 38px;position:relative;min-height:500px;display:flex;flex-direction:column;transition:box-shadow .5s;transform-style:preserve-3d}
+.svc:hover{box-shadow:0 44px 70px -40px rgba(18,49,36,.55)}
+.walk{background:var(--forest);color:#EDE6D6}
+.sit{background:var(--paper);border:1px solid var(--line)}
+.tag{font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;display:flex;align-items:center;gap:10px}
+.tag svg{width:16px;height:16px;fill:currentColor}
+.walk .tag{color:#A9C7B5}.sit .tag{color:var(--rust)}
+.big{font-family:var(--serif);font-size:84px;line-height:1;font-weight:380;letter-spacing:-.04em;margin:34px 0 4px;font-variation-settings:"opsz" 144,"SOFT" 50}
+.big small{font-size:22px;letter-spacing:0;font-weight:400;margin-left:8px;font-family:var(--sans);opacity:.7}
+.svc h3{font-family:var(--serif);font-weight:450;font-size:26px;line-height:1.2;letter-spacing:-.01em;margin-bottom:24px;max-width:62%}
+.walk h3{color:#fff}
+.svc ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:12px 24px;font-size:16px}
+.svc li{display:flex;gap:10px;align-items:flex-start;line-height:1.4}
+.svc li::before{content:"";width:16px;height:16px;flex:none;margin-top:2px;border-radius:50%;background:center/10px no-repeat}
+.walk li::before{background-color:rgba(220,235,217,.15);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 5.2 4.1 7.2 8 3' fill='none' stroke='%23DCEBD9' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.sit li::before{background-color:var(--rust-soft);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 5.2 4.1 7.2 8 3' fill='none' stroke='%23B4532A' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.foot{margin-top:auto;padding-top:30px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:15px}
+.walk .foot{border-top:1px solid rgba(255,255,255,.12);color:#cfe0d4}
+.sit .foot{border-top:1px solid var(--line);color:var(--muted)}
+.foot strong{font-weight:600;transition:transform .3s}
+.foot:hover strong{transform:translateX(4px)}
+.walk .foot strong{color:#fff}.sit .foot strong{color:var(--ink)}
+
+.mini{position:absolute;right:34px;top:-40px;width:220px;background:#fffdf8;padding:9px 9px 0;transform:rotate(5deg) translateZ(40px);box-shadow:0 18px 40px -18px rgba(60,40,20,.5);transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.sit .mini{transform:rotate(-5deg) translateZ(40px)}
+.svc:hover .mini{transform:rotate(1deg) translateZ(60px) translateY(-6px)}
+.mini img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.sit .mini img{object-position:40% 50%}
+.mini figcaption{font-family:var(--hand);font-size:20px;color:#2c2a26;height:40px;display:flex;align-items:center;padding:0 3px}
+
+@media (max-width:1100px){.mini{width:170px}.svc{padding:36px 30px 32px}}
+@media (max-width:900px){
+  .services{padding:96px 0 80px}
+  .cards{grid-template-columns:1fr;gap:64px}
+  .svc{min-height:0}
+}
+@media (max-width:640px){
+  .svc{padding:30px 22px 26px;border-radius:22px}
+  .mini{width:44%;right:16px;top:-34px}
+  .big{font-size:60px;margin-top:26px}
+  .big small{font-size:17px}
+  .svc h3{font-size:22px;max-width:none}
+  .svc ul{grid-template-columns:1fr;font-size:15.5px}
+  .foot{flex-direction:column;align-items:flex-start;font-size:14.5px}
+}

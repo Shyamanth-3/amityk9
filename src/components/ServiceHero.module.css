@@ -1,0 +1,37 @@
+.hero{padding:24px 0 80px}
+.grid{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center}
+.crumbs{display:flex;gap:10px;font-size:14px;color:var(--muted);margin-bottom:26px}
+.crumbs a{color:var(--forest);font-weight:600}
+.h1{font-family:var(--serif);font-weight:420;font-size:clamp(44px,5.4vw,84px);line-height:.98;letter-spacing:-.03em;font-variation-settings:"opsz" 144,"SOFT" 40}
+.h1 em{color:var(--rust);font-weight:380;font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1}
+.lede{font-size:19px;line-height:1.6;color:#45413a;max-width:520px;margin:28px 0 34px}
+.ctas{display:flex;align-items:center;gap:30px;flex-wrap:wrap}
+.ghost{display:inline-flex;gap:10px;font-weight:600}
+.facts{display:flex;margin-top:46px;border-top:1px solid var(--line);padding-top:22px;max-width:560px}
+.facts div{flex:1;padding-right:18px}
+.facts div+div{padding-left:22px;border-left:1px solid var(--line)}
+.facts dt{font-family:var(--serif);font-weight:500;font-size:22px;color:var(--forest)}
+.facts dd{font-size:14px;color:var(--muted)}
+
+.polaroid{position:relative;background:#fffdf8;padding:12px 12px 0;transform:rotate(2deg);box-shadow:0 1px 1px rgba(0,0,0,.06),0 18px 40px -18px rgba(60,40,20,.45),0 40px 80px -40px rgba(60,40,20,.35)}
+.polaroid img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.polaroid figcaption{font-family:var(--hand);font-size:24px;color:#2c2a26;height:56px;display:flex;align-items:center;justify-content:flex-end;padding:0 4px}
+.tape{position:absolute;top:-14px;left:50%;width:96px;height:28px;margin-left:-48px;background:rgba(232,220,196,.8);transform:rotate(-3deg);z-index:1}
+
+.included{padding:40px 0 60px}
+.h2{margin-bottom:34px}
+.included ul{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:0 40px;border-top:1px solid #cdbfa7}
+.included li{display:flex;gap:12px;align-items:flex-start;padding:20px 0;border-bottom:1px solid var(--line);font-size:17px}
+.included svg{width:20px;height:20px;flex:none;margin-top:2px;color:var(--rust)}
+
+@media (max-width:900px){
+  .grid{grid-template-columns:1fr;gap:44px}
+  .lede{font-size:17px}
+  .included ul{grid-template-columns:1fr 1fr}
+}
+@media (max-width:640px){
+  .hero{padding:12px 0 56px}
+  .facts dt{font-size:17px}.facts dd{font-size:12.5px}.facts div+div{padding-left:12px}.facts div{padding-right:8px}
+  .polaroid{padding:9px 9px 0}.polaroid figcaption{font-size:20px;height:46px}
+  .included ul{grid-template-columns:1fr}
+}

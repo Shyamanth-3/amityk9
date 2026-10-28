@@ -1,0 +1,82 @@
+.hero{position:relative;overflow:clip}
+.grid{display:grid;grid-template-columns:1.02fr .98fr;align-items:center;gap:56px;min-height:calc(100svh - 88px);padding:24px 0 56px}
+.eyebrow{color:var(--forest);margin-bottom:26px}
+.pin{width:8px;height:8px;border-radius:50%;background:var(--rust);box-shadow:0 0 0 5px rgba(180,83,42,.15);flex:none}
+
+.h1{font-family:var(--serif);font-weight:420;font-size:clamp(56px,7vw,112px);line-height:.94;letter-spacing:-.035em;font-variation-settings:"opsz" 144,"SOFT" 40,"WONK" 0}
+.line{display:block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
+.line > span{display:inline-block}
+.h1 em{color:var(--rust);font-weight:380;font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1}
+@media (prefers-reduced-motion:no-preference){
+  .line > span{animation:line .9s cubic-bezier(.2,.7,.2,1) both}
+  .line:nth-child(2) > span{animation-delay:.09s}
+  .line:nth-child(3) > span{animation-delay:.18s}
+}
+@keyframes line{from{translate:0 105%}}
+
+.lede{font-size:19px;line-height:1.6;color:#45413a;max-width:500px;margin:30px 0 36px}
+.ctas{display:flex;align-items:center;gap:30px;flex-wrap:wrap}
+.ghost{display:inline-flex;gap:10px;font-weight:600;color:var(--ink)}
+.ghost span:last-child{transition:transform .3s}
+.ghost:hover span:last-child{transform:translateX(4px)}
+
+.meta{display:flex;margin-top:52px;border-top:1px solid var(--line);padding-top:22px;max-width:560px}
+.meta div{flex:1;padding-right:18px}
+.meta div+div{padding-left:22px;border-left:1px solid var(--line)}
+.meta dt{font-family:var(--serif);font-weight:500;font-size:22px;letter-spacing:-.01em;color:var(--forest)}
+.meta dd{font-size:14px;color:var(--muted)}
+
+/* photo stage */
+.stage{position:relative;padding:40px 0 90px 30px}
+.polaroid{position:relative;background:#fffdf8;padding:12px 12px 0;box-shadow:0 1px 1px rgba(0,0,0,.06),0 18px 40px -18px rgba(60,40,20,.45),0 40px 80px -40px rgba(60,40,20,.35)}
+.polaroid figcaption{font-family:var(--hand);font-size:24px;color:#2c2a26;height:56px;display:flex;align-items:center;padding:0 4px;line-height:1}
+.tape{position:absolute;top:-14px;left:50%;width:96px;height:28px;margin-left:-48px;background:rgba(232,220,196,.8);transform:rotate(-3deg);box-shadow:0 1px 2px rgba(0,0,0,.06);z-index:1}
+.main{transform:rotate(2.2deg);z-index:2}
+.main figcaption{justify-content:flex-end}
+.mainImg{width:100%;aspect-ratio:3/2;object-fit:cover;object-position:62% 50%}
+.cat{position:absolute;left:-40px;bottom:0;width:min(220px,40%);transform:rotate(-6deg);z-index:3}
+.cat figcaption{font-size:21px;height:48px}
+.catImg{width:100%;aspect-ratio:1;object-fit:cover;object-position:52% 40%}
+.badge{position:absolute;right:-22px;top:-6px;width:132px;height:132px;z-index:4}
+.ring{width:100%;height:100%;animation:spin 28s linear infinite}
+.core{position:absolute;inset:34px;border-radius:50%;background:var(--rust);display:grid;place-items:center}
+.core svg{width:30px;height:30px;fill:var(--cream)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.note{position:absolute;right:40px;bottom:12px;z-index:4;font-family:var(--hand);font-size:25px;color:var(--forest);line-height:1.05;transform:rotate(-4deg)}
+.note svg{position:absolute;left:-62px;top:-42px;width:62px;height:52px}
+
+.trail{position:absolute;inset:0;pointer-events:none;z-index:0}
+.trail :global(svg){position:absolute;left:0;top:0;width:22px;height:22px;fill:var(--rust);opacity:0}
+.grid{position:relative;z-index:1}
+
+@media (prefers-reduced-motion:reduce){.ring{animation:none}}
+
+@media (max-width:1100px){
+  .grid{gap:36px}
+  .badge{width:110px;height:110px;right:-8px}
+  .core{inset:28px}
+}
+@media (max-width:900px){
+  /* copy children join the grid so the photo can sit right under the headline */
+  .grid{grid-template-columns:1fr;min-height:0;padding:16px 0 40px;gap:0}
+  .copy{display:contents}
+  .eyebrow{order:1;font-size:11.5px;letter-spacing:.12em;margin-bottom:18px}
+  .h1{order:2}
+  .stage{order:3;padding:34px 6px 64px}
+  .lede{order:4;font-size:17px;margin:30px 0 26px}
+  .ctas{order:5;gap:20px}
+  .meta{order:6;margin-top:34px}
+  .meta dt{font-size:17px}
+  .meta dd{font-size:12.5px;line-height:1.35}
+  .meta div+div{padding-left:12px}
+  .meta div{padding-right:8px}
+  .badge{width:92px;height:92px;top:-4px;right:-4px}
+  .core{inset:23px}
+  .core svg{width:22px;height:22px}
+  .cat{left:0;width:40%}
+  .note{font-size:21px;right:6px;bottom:4px}
+  .note svg{display:none}
+  .polaroid figcaption{font-size:20px;height:46px}
+  .cat figcaption{font-size:17px;height:38px}
+  .polaroid{padding:9px 9px 0}
+}

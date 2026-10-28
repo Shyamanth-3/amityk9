@@ -1,0 +1,10 @@
+.page{padding:24px 0 120px;max-width:760px!important}
+.crumbs{display:flex;gap:10px;font-size:14px;color:var(--muted);margin-bottom:26px}
+.crumbs a{color:var(--forest);font-weight:600}
+.h1{font-family:var(--serif);font-weight:420;font-size:clamp(44px,5vw,72px);line-height:1;letter-spacing:-.03em}
+.updated{margin-top:14px;color:var(--muted);font-size:14.5px}
+.body{margin-top:44px;border-top:1px solid #cdbfa7}
+.body h2{font-size:26px;margin:40px 0 12px}
+.body p,.body li{color:#3f3b34;font-size:17px;line-height:1.7}
+.body ul{margin:12px 0 0 20px;display:grid;gap:8px}
+.body a{color:var(--forest);font-weight:600;text-decoration:underline;text-underline-offset:3px}

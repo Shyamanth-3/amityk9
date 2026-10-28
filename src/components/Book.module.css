@@ -1,0 +1,44 @@
+.book{background:var(--forest);color:var(--cream);padding:130px 0 120px;position:relative;z-index:2;border-radius:44px 44px 0 0}
+.tagdisc{position:absolute;top:-42px;left:50%;margin-left:-42px;width:84px;height:84px;border-radius:50%;background:var(--rust);border:6px solid var(--cream);display:grid;place-items:center;z-index:3}
+.tagdisc svg{width:34px;height:34px;fill:var(--cream)}
+.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:70px;align-items:end}
+.h2{font-size:clamp(44px,5.6vw,92px);line-height:.98;color:#F6F0E4}
+.h2 em{color:#F0B48E}
+.lead{color:#b9cdc0;font-size:18px;max-width:520px;margin-top:28px}
+
+.form{margin-top:44px;display:grid;grid-template-columns:1fr 1fr;gap:22px 24px;max-width:640px}
+.field{display:grid;gap:8px}
+.field span,.chips legend{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#a9c7b5}
+.field input{height:52px;border-radius:14px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--cream);font:500 16px var(--sans);padding:0 16px;transition:border-color .3s,background .3s}
+.field input::placeholder{color:rgba(246,240,228,.38)}
+.field input:focus{outline:none;border-color:#F0B48E;background:rgba(255,255,255,.1)}
+.chips{border:0;display:flex;flex-wrap:wrap;gap:8px}
+.chips legend{margin-bottom:8px;float:left;width:100%}
+.wide{grid-column:1/-1}
+.chips label{position:relative;cursor:pointer}
+.chips input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.chips label span{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 18px;border-radius:999px;border:1px solid rgba(255,255,255,.22);font-size:15px;font-weight:500;color:#dfe9e2;transition:background .3s,color .3s,border-color .3s,transform .3s}
+.chips label:hover span{border-color:rgba(255,255,255,.5)}
+.chips input:checked + span{background:var(--cream);color:var(--forest-deep);border-color:var(--cream)}
+.chips input:focus-visible + span{outline:2.5px solid #F0B48E;outline-offset:3px}
+.chips i{width:9px;height:9px;border-radius:50%}
+
+.contact{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:28px;padding:30px}
+.lbl{font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#a9c7b5}
+.bubble{margin:14px 0 24px;background:#D7EDCF;color:#1c2a20;border-radius:18px;border-top-right-radius:4px;padding:16px 18px;font-size:15.5px;line-height:1.5;min-height:132px;box-shadow:0 10px 30px -18px rgba(0,0,0,.5)}
+.btns{display:grid;gap:12px}
+.btns :global(.btn){justify-content:center;height:56px}
+.wa{background:var(--cream);color:var(--forest-deep)}
+.wa:hover{transform:translateY(-2px)}
+.call{background:transparent;color:var(--cream);border:1.5px solid rgba(255,255,255,.3)!important}
+.call:hover{border-color:var(--cream)!important}
+.contact small{display:block;margin-top:18px;color:#9db5a6;font-size:14px;text-align:center}
+
+@media (max-width:1100px){.grid{gap:40px}}
+@media (max-width:900px){.book{padding:110px 0 90px;border-radius:32px 32px 0 0}.grid{grid-template-columns:1fr;align-items:start}}
+@media (max-width:640px){
+  .form{grid-template-columns:1fr;gap:20px}
+  .lead{font-size:16.5px}
+  .contact{padding:22px}
+  .chips label span{height:40px;padding:0 15px;font-size:14.5px}
+}
