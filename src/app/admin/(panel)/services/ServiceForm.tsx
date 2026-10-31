@@ -1,0 +1,93 @@
+"use client";
+import { useActionState, useState } from "react";
+import { SERVICE_STATUS, slugify, type Package, type Service, type ServiceStatus } from "@/lib/services";
+import { saveService } from "./actions";
+import s from "../../admin.module.css";
+
+const blank: Package = { name: "", price: null, visits: null, note: "" };
+
+export default function ServiceForm({ service }: { service?: Service }) {
+  const [error, action, pending] = useActionState(saveService, null);
+  const [name, setName] = useState(service?.name ?? "");
+  const [slugTouched, setSlugTouched] = useState(Boolean(service));
+  const [slug, setSlug] = useState(service?.slug ?? "");
+  const [enquiryOnly, setEnquiryOnly] = useState(service?.enquiry_only ?? false);
+  const [pkgs, setPkgs] = useState<Package[]>(service?.packages?.length ? service.packages : []);
+
+  const setPkg = (i: number, k: keyof Package, v: string) =>
+    setPkgs(pkgs.map((p, j) => (j === i ? { ...p, [k]: k === "price" || k === "visits" ? (v === "" ? null : Number(v)) : v } : p)));
+
+  return (
+    <form action={action} className={s.form}>
+      <input type="hidden" name="id" value={service?.id ?? ""} />
+      <input type="hidden" name="packages" value={JSON.stringify(pkgs)} />
+
+      <section className={s.section}>
+        <h2>About the service</h2>
+        <div className={s.row}>
+          <label className={s.field}><span>Service name</span>
+            <input name="name" required maxLength={80} value={name} placeholder="e.g. Pet grooming"
+              onChange={(e) => { setName(e.target.value); if (!slugTouched) setSlug(slugify(e.target.value)); }} />
+          </label>
+          <label className={s.field}><span>Web address</span>
+            <input name="slug" maxLength={60} value={slug} onChange={(e) => { setSlugTouched(true); setSlug(e.target.value); }} />
+            <small>amityk9.vercel.app/services#{slug || "…"}</small>
+          </label>
+        </div>
+        <label className={s.field}><span>Short summary</span><input name="summary" maxLength={300} defaultValue={service?.summary} placeholder="One line shown on the services page" /></label>
+        <label className={s.field}><span>Description</span><textarea name="description" maxLength={4000} defaultValue={service?.description} /></label>
+        <label className={s.field}><span>What&apos;s included</span>
+          <textarea name="inclusions" defaultValue={service?.inclusions?.join("\n")} placeholder={"One item per line\ne.g. Bath and blow-dry"} />
+        </label>
+      </section>
+
+      <section className={s.section}>
+        <h2>Price and packages</h2>
+        <label className={s.check}><input type="checkbox" name="enquiry_only" checked={enquiryOnly} onChange={(e) => setEnquiryOnly(e.target.checked)} />Enquiry only: show “Contact for pricing” instead of a price</label>
+        {!enquiryOnly && (
+          <div className={s.row}>
+            <label className={s.field}><span>Starting price (₹ a month)</span><input name="price_from" type="number" min={0} defaultValue={service?.price_from ?? ""} /></label>
+            <label className={s.field}><span>Duration</span><input name="duration" maxLength={80} defaultValue={service?.duration} placeholder="e.g. About 30 min per walk" /></label>
+          </div>
+        )}
+        {enquiryOnly && <input type="hidden" name="duration" value={service?.duration ?? ""} />}
+        {pkgs.map((p, i) => (
+          <div key={i} className={s.pkg}>
+            <label className={s.field}><span>Package</span><input value={p.name} onChange={(e) => setPkg(i, "name", e.target.value)} placeholder="Gold" /></label>
+            <label className={s.field}><span>Price ₹</span><input type="number" min={0} value={p.price ?? ""} onChange={(e) => setPkg(i, "price", e.target.value)} /></label>
+            <label className={s.field}><span>Visits</span><input type="number" min={0} value={p.visits ?? ""} onChange={(e) => setPkg(i, "visits", e.target.value)} /></label>
+            <label className={s.field}><span>Note</span><input value={p.note} onChange={(e) => setPkg(i, "note", e.target.value)} placeholder="6 days a week" /></label>
+            <button type="button" className={`${s.ghost} ${s.danger}`} onClick={() => setPkgs(pkgs.filter((_, j) => j !== i))}>Remove</button>
+          </div>
+        ))}
+        {pkgs.length < 8 && <div><button type="button" className={s.ghost} onClick={() => setPkgs([...pkgs, { ...blank }])}>+ Add a package</button></div>}
+      </section>
+
+      <section className={s.section}>
+        <h2>Availability and bookings</h2>
+        <div className={s.row}>
+          <label className={s.field}><span>Service area</span><input name="service_area" maxLength={200} defaultValue={service?.service_area ?? "Gated communities in Hyderabad"} /></label>
+          <label className={s.field}><span>Days and times</span><input name="availability" maxLength={200} defaultValue={service?.availability ?? "Monday to Saturday"} /></label>
+        </div>
+        <label className={s.check}><input type="checkbox" name="booking_enabled" defaultChecked={service?.booking_enabled ?? true} />Customers can request this service in the booking form</label>
+        <label className={s.check}><input type="checkbox" name="temporarily_unavailable" defaultChecked={service?.temporarily_unavailable} />Temporarily unavailable (still shown, but can&apos;t be booked)</label>
+      </section>
+
+      <section className={s.section}>
+        <h2>Visibility</h2>
+        <label className={s.field}><span>Status</span>
+          <select name="status" defaultValue={service?.status ?? "draft"}>
+            {(Object.keys(SERVICE_STATUS) as ServiceStatus[]).map((k) => <option key={k} value={k}>{SERVICE_STATUS[k]}</option>)}
+          </select>
+          <small>Draft and Unpublished services are hidden from the website. Archived services are hidden and kept for booking history.</small>
+        </label>
+      </section>
+
+      {error && <p className={s.error} role="alert">{error}</p>}
+      <div className={s.bar}>
+        <button className={s.primary} disabled={pending}>{pending ? "Saving…" : "Save service"}</button>
+        <a className={s.ghost} href="/admin/services">Cancel</a>
+      </div>
+    </form>
+  );
+}

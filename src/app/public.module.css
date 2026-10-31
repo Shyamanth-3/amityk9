@@ -1,0 +1,48 @@
+/* /services and /book: database-driven public pages */
+.page{padding:24px 0 120px}
+.narrow{max-width:760px!important}
+.crumbs{display:flex;gap:10px;font-size:14px;color:var(--muted);margin-bottom:26px}
+.crumbs a{color:var(--forest);font-weight:600}
+.h1{font-family:var(--serif);font-weight:420;font-size:clamp(44px,5.4vw,80px);line-height:.98;letter-spacing:-.03em}
+.h1 em{color:var(--rust);font-weight:380}
+.lede{font-size:18px;line-height:1.6;color:#45413a;max-width:600px;margin:22px 0 44px}
+
+.list{display:grid;gap:24px}
+.svc{background:var(--paper);border:1px solid var(--line);border-radius:26px;padding:32px;display:grid;gap:16px;scroll-margin-top:90px}
+.svcHead{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;flex-wrap:wrap}
+.svc h2{font-size:clamp(30px,3vw,42px)}
+.summary{color:var(--muted);margin-top:6px}
+.price{font-family:var(--serif);font-size:24px;color:var(--rust);white-space:nowrap}
+.incl{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px 24px}
+.incl li{display:flex;gap:10px;align-items:flex-start}
+.incl svg{width:18px;height:18px;flex:none;margin-top:3px;color:var(--rust)}
+.pkgs{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.pkg{background:#F3ECDF;border-radius:16px;padding:16px 18px;display:grid;gap:2px;font-size:14.5px;color:#4b463e}
+.pkg b{font-family:var(--serif);font-size:20px;font-weight:500;color:var(--ink)}
+.meta{color:var(--muted);font-size:14.5px}
+.unavailable{color:var(--rust);font-weight:600}
+.svc :global(.btn){justify-self:start}
+
+.form{display:grid;gap:18px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.field{display:grid;gap:7px}
+.field span{font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:#6A645A}
+.field input,.field select,.field textarea{width:100%;height:52px;border:1px solid #D9CDB8;border-radius:14px;padding:0 16px;font:16px var(--sans);background:#FFFDF8;color:var(--ink)}
+.field textarea{height:auto;min-height:110px;padding:14px 16px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--forest);outline-offset:1px}
+.form :global(.btn){justify-self:start}
+.error{background:#FBE6E0;color:#8E3F1F;border-radius:12px;padding:12px 16px}
+.fine{color:var(--muted);font-size:14px}
+.fine a{color:var(--forest);font-weight:600}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+
+.done{background:var(--paper);border:1px solid var(--line);border-radius:26px;padding:34px;display:grid;gap:14px}
+.doneTag{font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--forest)}
+.done h2{font-size:clamp(28px,3vw,40px)}
+.done h2 span{color:var(--rust)}
+.done :global(.btn){justify-self:start}
+
+@media (max-width:640px){
+  .svc{padding:24px 20px}
+  .incl,.two{grid-template-columns:1fr}
+}

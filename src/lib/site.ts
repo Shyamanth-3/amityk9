@@ -15,10 +15,11 @@ export const wa =(text?: string) =>
   `https://wa.me/${PHONE.slice(1)}${text ? `?text=${encodeURIComponent(text)}` : ""}`;
 
 export const NAV = [
-  { href: "/#services", label: "Services" },
+  { href: "/services", label: "Services" },
   { href: "/#updates", label: "Walk updates" },
   { href: "/#plans", label: "Plans" },
   { href: "/#faq", label: "Questions" },
+  { href: "/book", label: "Book" },
 ];
 
 export type Mode = "walk" | "sit";
