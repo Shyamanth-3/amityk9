@@ -30,6 +30,7 @@ export default async function Panel({ children }: { children: React.ReactNode })
         <nav className={s.nav}>
           <a href="/admin/bookings">Bookings</a>
           <a href="/admin/services">Services</a>
+          <a href="/admin/media">Gallery</a>
           <a href="/services" target="_blank" rel="noopener">View site ↗</a>
         </nav>
         <form action={signOut} className={s.who}><span>{admin.user.email}</span><button>Sign out</button></form>

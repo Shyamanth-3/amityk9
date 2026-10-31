@@ -1,0 +1,37 @@
+.head{padding:24px 0 44px}
+.crumbs{display:flex;gap:10px;font-size:14px;color:var(--muted);margin-bottom:30px}
+.crumbs a{color:var(--forest);font-weight:600}
+.h1{font-family:var(--serif);font-weight:420;font-size:clamp(48px,6vw,96px);line-height:.96;letter-spacing:-.035em;font-variation-settings:"opsz" 144,"SOFT" 40}
+.h1 em{color:var(--rust);font-weight:380;font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1}
+.lede{font-size:19px;line-height:1.6;color:#45413a;max-width:560px;margin-top:24px;padding-bottom:40px}
+
+/* masonry with CSS columns: photos keep their own shapes */
+.grid{columns:3 320px;column-gap:20px;padding-bottom:120px}
+.item{break-inside:avoid;margin-bottom:20px;background:#fffdf8;padding:10px 10px 0;box-shadow:0 1px 1px rgba(0,0,0,.05),0 18px 34px -22px rgba(60,40,20,.45);transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+.item:nth-child(3n+1){transform:rotate(-.8deg)}
+.item:nth-child(3n+2){transform:rotate(.7deg)}
+.item:hover{transform:rotate(0) translateY(-4px)}
+.item figcaption{font-family:var(--hand);font-size:21px;color:#2c2a26;padding:8px 4px 12px;line-height:1.15}
+.item > :last-child:not(figcaption){margin-bottom:10px}
+.photoBtn{display:block;width:100%;border:0;padding:0;background:#EEE6D8;cursor:zoom-in}
+.photoBtn img{width:100%;height:auto;display:block}
+
+.video{position:relative;display:block;width:100%;aspect-ratio:16/9;border:0;padding:0;overflow:hidden;background:#111}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.poster{cursor:pointer}
+.poster img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.poster:hover img{transform:scale(1.04)}
+.play{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:rgba(18,49,36,.88);box-shadow:0 10px 30px -8px rgba(0,0,0,.6)}
+.play::after{content:"";position:absolute;left:26px;top:20px;border-style:solid;border-width:12px 0 12px 19px;border-color:transparent transparent transparent var(--cream)}
+.insta{display:grid;place-items:end start;padding:16px;color:#fff;background:linear-gradient(135deg,#F58529,#DD2A7B 55%,#8134AF);text-decoration:none}
+.insta b{position:relative;z-index:1}
+
+.lightbox{border:0;padding:0;background:transparent;max-width:min(1200px,94vw);max-height:92vh;overflow:visible}
+.lightbox::backdrop{background:rgba(12,24,18,.88)}
+.lightbox figure{background:#fffdf8;padding:12px 12px 0}
+.lightbox img{max-height:80vh;width:auto;max-width:100%;height:auto;display:block}
+.lightbox figcaption{font-family:var(--hand);font-size:24px;padding:10px 4px 14px}
+.close{position:absolute;top:-18px;right:-18px;width:44px;height:44px;border-radius:50%;border:0;background:var(--cream);color:var(--ink);font-size:26px;line-height:1;cursor:pointer;box-shadow:0 8px 20px -8px rgba(0,0,0,.5)}
+
+@media (prefers-reduced-motion:reduce){.item,.item:hover{transform:none}}
+@media (max-width:640px){.lede{font-size:17px}.grid{columns:1}.close{top:8px;right:8px}}

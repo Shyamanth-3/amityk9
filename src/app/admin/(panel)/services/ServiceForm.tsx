@@ -1,6 +1,7 @@
 "use client";
 import { useActionState, useState } from "react";
-import { SERVICE_STATUS, slugify, type Package, type Service, type ServiceStatus } from "@/lib/services";
+import { SERVICE_STATUS, slugify, type Package, type Photo, type Service, type ServiceStatus } from "@/lib/services";
+import PhotoPicker from "../../PhotoPicker";
 import { saveService } from "./actions";
 import s from "../../admin.module.css";
 
@@ -13,6 +14,7 @@ export default function ServiceForm({ service }: { service?: Service }) {
   const [slug, setSlug] = useState(service?.slug ?? "");
   const [enquiryOnly, setEnquiryOnly] = useState(service?.enquiry_only ?? false);
   const [pkgs, setPkgs] = useState<Package[]>(service?.packages?.length ? service.packages : []);
+  const [photos, setPhotos] = useState<Photo[]>(service?.images ?? []);
 
   const setPkg = (i: number, k: keyof Package, v: string) =>
     setPkgs(pkgs.map((p, j) => (j === i ? { ...p, [k]: k === "price" || k === "visits" ? (v === "" ? null : Number(v)) : v } : p)));
@@ -21,6 +23,7 @@ export default function ServiceForm({ service }: { service?: Service }) {
     <form action={action} className={s.form}>
       <input type="hidden" name="id" value={service?.id ?? ""} />
       <input type="hidden" name="packages" value={JSON.stringify(pkgs)} />
+      <input type="hidden" name="images" value={JSON.stringify(photos)} />
 
       <section className={s.section}>
         <h2>About the service</h2>
@@ -39,6 +42,31 @@ export default function ServiceForm({ service }: { service?: Service }) {
         <label className={s.field}><span>What&apos;s included</span>
           <textarea name="inclusions" defaultValue={service?.inclusions?.join("\n")} placeholder={"One item per line\ne.g. Bath and blow-dry"} />
         </label>
+      </section>
+
+      <section className={s.section}>
+        <h2>Photos</h2>
+        <p className={s.muted}>The first photo is the cover on the services page. Photos are resized automatically; up to 6.</p>
+        {photos.length > 0 && (
+          <div className={s.thumbs}>
+            {photos.map((p, i) => (
+              <figure key={p.path} className={s.thumb}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={p.url} alt="" />
+                {i === 0 && <span className={s.cover}>Cover</span>}
+                <input value={p.alt} maxLength={120} placeholder="Describe the photo" aria-label="Photo description"
+                  onChange={(e) => setPhotos(photos.map((q, j) => (j === i ? { ...q, alt: e.target.value } : q)))} />
+                <div className={s.actions}>
+                  {i > 0 && <button type="button" className={s.ghost} onClick={() => setPhotos([p, ...photos.filter((_, j) => j !== i)])}>Make cover</button>}
+                  <button type="button" className={`${s.ghost} ${s.danger}`} onClick={() => setPhotos(photos.filter((_, j) => j !== i))}>Remove</button>
+                </div>
+              </figure>
+            ))}
+          </div>
+        )}
+        {photos.length < 6 && (
+          <PhotoPicker folder="services" onUploaded={(list) => setPhotos([...photos, ...list.map((u) => ({ ...u, alt: "" }))].slice(0, 6))} />
+        )}
       </section>
 
       <section className={s.section}>

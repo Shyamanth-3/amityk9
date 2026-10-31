@@ -1,8 +1,8 @@
 "use server";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { currentAdmin } from "@/lib/supabase";
-import { slugify, type Package, type ServiceStatus } from "@/lib/services";
+import { currentAdmin, MEDIA_PATH, mediaUrl } from "@/lib/supabase";
+import { slugify, type Package, type Photo, type ServiceStatus } from "@/lib/services";
 
 const STATUSES: ServiceStatus[] = ["draft", "published", "unpublished", "archived"];
 const str = (f: FormData, k: string, max: number) => String(f.get(k) ?? "").trim().slice(0, max);
@@ -35,6 +35,14 @@ export async function saveService(_: string | null, f: FormData): Promise<string
       .map((p) => ({ name: String(p.name).trim().slice(0, 40), price: int(p.price), visits: int(p.visits), note: String(p.note ?? "").trim().slice(0, 80) }));
   } catch { return "The packages couldn't be read. Please check them."; }
 
+  let images: Photo[] = [];
+  try {
+    images = (JSON.parse(String(f.get("images") || "[]")) as Photo[])
+      .filter((p) => p && MEDIA_PATH.test(String(p.path)) && p.path.startsWith("services/"))
+      .slice(0, 6)
+      .map((p) => ({ path: p.path, url: mediaUrl(p.path), alt: String(p.alt ?? "").trim().slice(0, 120) || name }));
+  } catch { return "The photos couldn't be read. Please try again."; }
+
   const row = {
     name, slug, status,
     summary: str(f, "summary", 300),
@@ -44,6 +52,7 @@ export async function saveService(_: string | null, f: FormData): Promise<string
     price_from: int(str(f, "price_from", 9)),
     duration: str(f, "duration", 80),
     packages,
+    images,
     service_area: str(f, "service_area", 200),
     availability: str(f, "availability", 200),
     temporarily_unavailable: f.get("temporarily_unavailable") === "on",
@@ -52,7 +61,12 @@ export async function saveService(_: string | null, f: FormData): Promise<string
 
   let error;
   if (id) {
+    const { data: before } = await db.from("services").select("images").eq("id", id).maybeSingle();
     ({ error } = await db.from("services").update(row).eq("id", id));
+    // photos taken off the service are deleted from storage too
+    const kept = new Set(images.map((p) => p.path));
+    const gone = ((before?.images ?? []) as Photo[]).map((p) => p.path).filter((p) => !kept.has(p));
+    if (!error && gone.length) await db.storage.from("media").remove(gone);
   } else {
     // new services go to the end of the list
     const { data: last } = await db.from("services").select("display_order").order("display_order", { ascending: false }).limit(1).maybeSingle();

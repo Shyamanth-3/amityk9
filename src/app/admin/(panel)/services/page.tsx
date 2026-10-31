@@ -37,9 +37,13 @@ export default async function Services({ searchParams }: { searchParams: Promise
                   </div>
                 )}
               </td>
-              <td>
+              <td className={s.svcCell}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                {v.images?.[0] ? <img src={v.images[0].url} alt="" className={s.mini} /> : <span className={s.mini} />}
+                <div>
                 <a href={`/admin/services/${v.id}`}><b>{v.name}</b></a>
                 <div className={s.muted}>/services#{v.slug}{v.temporarily_unavailable ? " · temporarily unavailable" : ""}{v.booking_enabled ? "" : " · bookings off"}</div>
+                </div>
               </td>
               <td><span className={`${s.badge} ${s[`b-${v.status}`]}`}>{SERVICE_STATUS[v.status]}</span></td>
               <td className={s.muted}>{priceLabel(v)}</td>

@@ -10,6 +10,10 @@ export function supabaseEnv() {
   return { url, key };
 }
 
+// Files in the public "media" bucket. Paths come from our own uploads (folder/uuid.webp); URLs are rebuilt here, never trusted from the browser.
+export const MEDIA_PATH = /^(services|gallery)\/[0-9a-f-]{36}\.webp$/;
+export const mediaUrl = (path: string) => `${supabaseEnv().url}/storage/v1/object/public/media/${path}`;
+
 // Public visitors: no session, sees only what the policies allow the anon role (published services).
 export function publicDb() {
   const { url, key } = supabaseEnv();

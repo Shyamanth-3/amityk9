@@ -2,6 +2,8 @@
 
 export type Package = { name: string; price: number | null; visits: number | null; note: string };
 
+export type Photo = { path: string; url: string; alt: string };
+
 export type ServiceStatus = "draft" | "published" | "unpublished" | "archived";
 
 export type Service = {
@@ -16,6 +18,7 @@ export type Service = {
   price_from: number | null;
   duration: string;
   packages: Package[];
+  images: Photo[]; // first is the cover
   service_area: string;
   availability: string;
   temporarily_unavailable: boolean;
