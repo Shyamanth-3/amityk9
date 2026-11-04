@@ -1,4 +1,5 @@
 "use server";
+import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { currentAdmin, MEDIA_PATH, mediaUrl } from "@/lib/supabase";
 import { parseVideo, videoUrl } from "@/lib/media";
@@ -7,7 +8,7 @@ import { removeUnsaved } from "@/lib/storage";
 
 async function owner() {
   const a = await currentAdmin();
-  if (!a) throw new Error("Not allowed");
+  if (!a) redirect("/admin/login"); // signed out or session expired: back to sign-in, nothing is written
   return a.db;
 }
 const refresh = () => { revalidatePath("/admin/media"); revalidatePath("/gallery"); };
