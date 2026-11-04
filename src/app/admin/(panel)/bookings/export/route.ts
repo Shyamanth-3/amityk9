@@ -1,5 +1,6 @@
 import { currentAdmin } from "@/lib/supabase";
 import { fetchAllPages } from "@/lib/pages";
+import { csvCell as cell } from "@/lib/csv";
 
 // CSV download of every booking, for the owner's own backups.
 export async function GET() {
@@ -18,8 +19,7 @@ export async function GET() {
     return new Response("Export failed", { status: 500 });
   }
   const cols = ["request_code", "created_at", "service_name", "customer_name", "phone", "pet_name", "pet_type", "community", "preferred_date", "preferred_time", "notes", "status", "internal_notes"];
-  // quote every cell; a leading = + - @ is neutralised so spreadsheets don't run it as a formula
-  const cell = (v: unknown) => `"${String(v ?? "").replace(/^([=+\-@])/, "'$1").replace(/"/g, '""')}"`;
+  // every cell is quoted and formula-like values are neutralised (see lib/csv)
   const csv = [cols.join(","), ...rows.map((r) => cols.map((c) => cell(r[c])).join(","))].join("\r\n");
 
   return new Response("﻿" + csv, {
