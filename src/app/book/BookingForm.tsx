@@ -1,6 +1,7 @@
 "use client";
 import { useActionState, useState } from "react";
 import { wa } from "@/lib/site";
+import { keepInput } from "@/lib/keepInput";
 import { Icon } from "@/components/Icons";
 import { submitBooking } from "./actions";
 import s from "../public.module.css";
@@ -24,7 +25,7 @@ export default function BookingForm({ services, initial }: { services: Opt[]; in
   if (!services.length) return <p className={s.lede}>Bookings are paused right now. Please message us on WhatsApp.</p>;
 
   return (
-    <form action={action} className={s.form} noValidate>
+    <form action={action} onSubmit={keepInput(action)} className={s.form} noValidate>
       {/* hidden from people; bots that fill it are ignored */}
       <input name="website" tabIndex={-1} autoComplete="off" className={s.hp} aria-hidden="true" />
       <input type="hidden" name="service_name" value={services.find((v) => v.id === service)?.name ?? ""} />
