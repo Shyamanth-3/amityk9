@@ -11,7 +11,7 @@ const int = (v: unknown) => { const n = Number(v); return v === "" || v == null 
 
 async function owner() {
   const a = await currentAdmin();
-  if (!a) throw new Error("Not allowed");
+  if (!a) redirect("/admin/login"); // signed out or session expired: back to sign-in, nothing is written
   return a.db;
 }
 

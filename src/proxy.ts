@@ -25,7 +25,10 @@ export async function proxy(request: NextRequest) {
   const isLogin = request.nextUrl.pathname === "/admin/login";
   // a missing session is normal when signed out; anything else is worth seeing in the server log
   if (error && error.name !== "AuthSessionMissingError") console.error("admin session check failed:", error.status, error.message);
-  if (!user && !isLogin) return NextResponse.redirect(new URL("/admin/login", request.url));
+  // Server Action calls are POSTs to the page they're on. A redirect here would make the browser re-send the
+  // action to /admin/login and show a crash page, so let them through: every admin action checks the owner
+  // itself and sends a signed-out caller to the login page.
+  if (!user && !isLogin && !request.headers.has("next-action")) return NextResponse.redirect(new URL("/admin/login", request.url));
   if (user && isLogin) return NextResponse.redirect(new URL("/admin", request.url));
   return response;
 }
