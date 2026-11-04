@@ -1,6 +1,7 @@
 "use client";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { SERVICE_STATUS, slugify, type Package, type Photo, type Service, type ServiceStatus } from "@/lib/services";
+import { keepInput } from "@/lib/keepInput";
 import PhotoPicker from "../../PhotoPicker";
 import { saveService } from "./actions";
 import { discardUploads } from "../../uploads";
@@ -35,7 +36,7 @@ export default function ServiceForm({ service }: { service?: Service }) {
     setPkgs(pkgs.map((p, j) => (j === i ? { ...p, [k]: k === "price" || k === "visits" ? (v === "" ? null : Number(v)) : v } : p)));
 
   return (
-    <form action={action} className={s.form}>
+    <form action={action} onSubmit={keepInput(action)} className={s.form}>
       <input type="hidden" name="id" value={service?.id ?? ""} />
       <input type="hidden" name="packages" value={JSON.stringify(pkgs)} />
       <input type="hidden" name="images" value={JSON.stringify(photos)} />
