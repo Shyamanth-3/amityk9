@@ -68,7 +68,11 @@ export default async function ServicesPage() {
                 <div className={s.copy}>
                   <p className={s.kicker}>
                     <span className={s.idx}>{String(i + 1).padStart(2, "0")}</span>
-                    {v.temporarily_unavailable ? <span className={s.paused}>Temporarily paused</span> : <span className={s.open}>Taking bookings</span>}
+                    {v.temporarily_unavailable
+                      ? <span className={s.paused}>Temporarily paused</span>
+                      : bookable
+                        ? <span className={s.open}>Taking bookings</span>
+                        : <span className={s.enquire}>Enquiries on WhatsApp</span>}
                   </p>
                   <h2 id={`h-${v.slug}`} className={s.h2}>{v.name}</h2>
                   {v.summary && <p className={s.summary}>{v.summary}</p>}

@@ -33,6 +33,7 @@
 .open{color:var(--forest);display:inline-flex;align-items:center;gap:8px}
 .open::before{content:"";width:8px;height:8px;border-radius:50%;background:#3E8E5A;box-shadow:0 0 0 4px rgba(62,142,90,.15)}
 .paused{color:var(--rust)}
+.enquire{color:var(--forest)}
 .h2{font-size:clamp(40px,4.4vw,66px);margin-top:14px}
 .summary{font-size:19px;color:#45413a;margin-top:12px;line-height:1.5}
 .price{display:inline-block;margin-top:22px;font-family:var(--serif);font-size:22px;color:var(--rust-deep);background:var(--rust-soft);padding:8px 18px;border-radius:999px}
