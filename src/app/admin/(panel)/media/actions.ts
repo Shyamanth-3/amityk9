@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import { currentAdmin, MEDIA_PATH, mediaUrl } from "@/lib/supabase";
 import { parseVideo, videoUrl } from "@/lib/media";
 import { failIf } from "../fail";
+import { removeUnsaved } from "@/lib/storage";
 
 async function owner() {
   const a = await currentAdmin();
@@ -17,14 +18,19 @@ async function nextOrder(db: Awaited<ReturnType<typeof owner>>) {
 }
 
 // Photos are already in the bucket (uploaded from the browser); this records them in the gallery.
+// Any that can't be recorded (over the 30 limit, or a failed insert) are deleted so they don't sit in the public bucket.
 export async function addPhotos(paths: string[]) {
   const db = await owner();
-  const ok = paths.filter((p) => MEDIA_PATH.test(p) && p.startsWith("gallery/")).slice(0, 30);
+  const valid = (Array.isArray(paths) ? paths : []).map(String).filter((p) => MEDIA_PATH.test(p) && p.startsWith("gallery/"));
+  const ok = valid.slice(0, 30);
+  await removeUnsaved(db, valid.slice(30));
   if (!ok.length) return;
   const start = await nextOrder(db);
-  await failIf(await db.from("media").insert(ok.map((path, i) => ({ kind: "photo", path, url: mediaUrl(path), display_order: start + i }))),
-    "The photos uploaded but couldn't be added to the gallery. Please try again.");
+  const { error } = await db.from("media").insert(ok.map((path, i) => ({ kind: "photo", path, url: mediaUrl(path), display_order: start + i })));
+  if (error) await removeUnsaved(db, ok); // delete first: failIf redirects
+  await failIf({ error }, "The photos couldn't be added to the gallery. Please upload them again.");
   refresh();
+  await failIf({ error: valid.length > 30 }, "Only the first 30 photos were added. Upload the rest in another batch.");
 }
 
 export async function addVideo(_: string | null, f: FormData): Promise<string | null> {

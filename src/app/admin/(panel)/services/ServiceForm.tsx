@@ -1,8 +1,9 @@
 "use client";
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { SERVICE_STATUS, slugify, type Package, type Photo, type Service, type ServiceStatus } from "@/lib/services";
 import PhotoPicker from "../../PhotoPicker";
 import { saveService } from "./actions";
+import { discardUploads } from "../../uploads";
 import s from "../../admin.module.css";
 
 const blank: Package = { name: "", price: null, visits: null, note: "" };
@@ -18,6 +19,17 @@ export default function ServiceForm({ service }: { service?: Service }) {
   const [duration, setDuration] = useState(service?.duration ?? "");
   const [pkgs, setPkgs] = useState<Package[]>(service?.packages?.length ? service.packages : []);
   const [photos, setPhotos] = useState<Photo[]>(service?.images ?? []);
+  const [leaving, setLeaving] = useState(false);
+  // Photos uploaded in this visit and not yet saved. Photos already on the service are never deleted from
+  // here: saveService removes those only after the save succeeds, so Cancel can't destroy live photos.
+  const fresh = useRef(new Set<string>());
+  const discard = (paths: string[]) => {
+    paths.forEach((p) => fresh.current.delete(p));
+    return paths.length ? discardUploads(paths).catch(() => {}) : Promise.resolve();
+  };
+  // Leaving through the admin menu unmounts the form; so does the redirect after a good save, which is safe
+  // because the server keeps any photo a saved row uses.
+  useEffect(() => () => { if (fresh.current.size) discardUploads([...fresh.current]).catch(() => {}); }, []);
 
   const setPkg = (i: number, k: keyof Package, v: string) =>
     setPkgs(pkgs.map((p, j) => (j === i ? { ...p, [k]: k === "price" || k === "visits" ? (v === "" ? null : Number(v)) : v } : p)));
@@ -61,14 +73,19 @@ export default function ServiceForm({ service }: { service?: Service }) {
                   onChange={(e) => setPhotos(photos.map((q, j) => (j === i ? { ...q, alt: e.target.value } : q)))} />
                 <div className={s.actions}>
                   {i > 0 && <button type="button" className={s.ghost} onClick={() => setPhotos([p, ...photos.filter((_, j) => j !== i)])}>Make cover</button>}
-                  <button type="button" className={`${s.ghost} ${s.danger}`} onClick={() => setPhotos(photos.filter((_, j) => j !== i))}>Remove</button>
+                  <button type="button" className={`${s.ghost} ${s.danger}`} onClick={() => { setPhotos(photos.filter((_, j) => j !== i)); if (fresh.current.has(p.path)) discard([p.path]); }}>Remove</button>
                 </div>
               </figure>
             ))}
           </div>
         )}
         {photos.length < 6 && (
-          <PhotoPicker folder="services" onUploaded={(list) => setPhotos([...photos, ...list.map((u) => ({ ...u, alt: "" }))].slice(0, 6))} />
+          <PhotoPicker folder="services" onUploaded={(list) => {
+            const all = [...photos, ...list.map((u) => ({ ...u, alt: "" }))];
+            all.slice(photos.length, 6).forEach((p) => fresh.current.add(p.path));
+            discard(all.slice(6).map((p) => p.path)); // over the limit of 6
+            setPhotos(all.slice(0, 6));
+          }} />
         )}
       </section>
 
@@ -125,7 +142,9 @@ export default function ServiceForm({ service }: { service?: Service }) {
       {error && <p className={s.error} role="alert">{error}</p>}
       <div className={s.bar}>
         <button className={s.primary} disabled={pending}>{pending ? "Saving…" : "Save service"}</button>
-        <a className={s.ghost} href="/admin/services">Cancel</a>
+        <a className={s.ghost} href="/admin/services" aria-disabled={leaving}
+          onClick={async (e) => { e.preventDefault(); if (leaving) return; setLeaving(true); await discard([...fresh.current]); window.location.assign("/admin/services"); }}>
+          {leaving ? "Cancelling…" : "Cancel"}</a>
       </div>
     </form>
   );
