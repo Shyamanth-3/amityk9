@@ -11,22 +11,26 @@ export type PageSource<T> = (from: number, to: number) => PromiseLike<Page<T>>;
 export const PAGE_SIZE = 1000;
 
 /**
- * Keeps requesting pages until one comes back shorter than pageSize.
- * Throws if any page errors, so callers never get a partial result.
- * If the source reports a total `count`, it also throws when fewer rows were
- * read than that total (e.g. the server's row cap is below pageSize, which
- * would otherwise make the first page look "short" and end early).
+ * Each request starts where the rows received so far end. If the source reports
+ * a total `count`, it keeps going until it has that many rows (so a server row
+ * cap below pageSize still exports everything); otherwise it stops at the first
+ * page shorter than pageSize.
+ * Throws if any page errors, or if fewer rows than the total could be read,
+ * so callers never get a partial result.
  */
 export async function fetchAllPages<T>(source: PageSource<T>, pageSize = PAGE_SIZE): Promise<T[]> {
   const rows: T[] = [];
   let total: number | null = null;
-  for (let from = 0; ; from += pageSize) {
+  for (let from = 0; ; ) {
     const { data, error, count } = await source(from, from + pageSize - 1);
     if (error) throw new Error(`page starting at row ${from} failed`, { cause: error });
     const page = data ?? [];
     rows.push(...page);
+    from += page.length;
     if (typeof count === "number") total = count;
-    if (page.length < pageSize) break;
+    // With a total, keep going until we have it all, even if the server caps pages below pageSize.
+    // Without one, a short page means the end.
+    if (page.length === 0 || (total !== null ? rows.length >= total : page.length < pageSize)) break;
   }
   if (total !== null && rows.length < total) {
     throw new Error(`read ${rows.length} of ${total} rows`);
