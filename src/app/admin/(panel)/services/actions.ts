@@ -2,6 +2,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { currentAdmin, MEDIA_PATH, mediaUrl } from "@/lib/supabase";
+import { failIf } from "../fail";
 import { slugify, type Package, type Photo, type ServiceStatus } from "@/lib/services";
 
 const STATUSES: ServiceStatus[] = ["draft", "published", "unpublished", "archived"];
@@ -81,7 +82,7 @@ export async function saveService(_: string | null, f: FormData): Promise<string
 export async function setStatus(id: string, status: ServiceStatus) {
   if (!STATUSES.includes(status)) return;
   const db = await owner();
-  await db.from("services").update({ status }).eq("id", id);
+  await failIf(await db.from("services").update({ status }).eq("id", id), "Couldn't change that service's status. Please try again.");
   refreshSite();
   revalidatePath("/admin/services");
 }
@@ -89,13 +90,15 @@ export async function setStatus(id: string, status: ServiceStatus) {
 // Swap a service with its neighbour in the public display order.
 export async function move(id: string, dir: -1 | 1) {
   const db = await owner();
-  const { data } = await db.from("services").select("id, display_order").neq("status", "archived").order("display_order");
-  const list = data ?? [];
+  const read = await db.from("services").select("id, display_order").neq("status", "archived").order("display_order");
+  await failIf(read, "Couldn't move that service. Please try again.");
+  const list = read.data ?? [];
   const i = list.findIndex((r) => r.id === id), j = i + dir;
   if (i < 0 || j < 0 || j >= list.length) return;
   // renumber everything so equal orders can't stall a swap
   [list[i], list[j]] = [list[j], list[i]];
-  await Promise.all(list.map((r, k) => db.from("services").update({ display_order: k + 1 }).eq("id", r.id)));
+  await failIf(await Promise.all(list.map((r, k) => db.from("services").update({ display_order: k + 1 }).eq("id", r.id))),
+    "Couldn't save the new order. Refresh the page to check it.");
   refreshSite();
   revalidatePath("/admin/services");
 }

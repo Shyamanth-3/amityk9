@@ -2,6 +2,7 @@
 import { revalidatePath } from "next/cache";
 import { currentAdmin, MEDIA_PATH, mediaUrl } from "@/lib/supabase";
 import { parseVideo, videoUrl } from "@/lib/media";
+import { failIf } from "../fail";
 
 async function owner() {
   const a = await currentAdmin();
@@ -21,7 +22,8 @@ export async function addPhotos(paths: string[]) {
   const ok = paths.filter((p) => MEDIA_PATH.test(p) && p.startsWith("gallery/")).slice(0, 30);
   if (!ok.length) return;
   const start = await nextOrder(db);
-  await db.from("media").insert(ok.map((path, i) => ({ kind: "photo", path, url: mediaUrl(path), display_order: start + i })));
+  await failIf(await db.from("media").insert(ok.map((path, i) => ({ kind: "photo", path, url: mediaUrl(path), display_order: start + i }))),
+    "The photos uploaded but couldn't be added to the gallery. Please try again.");
   refresh();
 }
 
@@ -39,18 +41,21 @@ export async function addVideo(_: string | null, f: FormData): Promise<string | 
 
 export async function updateMedia(id: string, f: FormData) {
   const db = await owner();
-  await db.from("media").update({ caption: String(f.get("caption") ?? "").trim().slice(0, 200), published: f.get("published") === "on" }).eq("id", id);
+  await failIf(await db.from("media").update({ caption: String(f.get("caption") ?? "").trim().slice(0, 200), published: f.get("published") === "on" }).eq("id", id),
+    "Couldn't save that change. Please try again.");
   refresh();
 }
 
 export async function moveMedia(id: string, dir: -1 | 1) {
   const db = await owner();
-  const { data } = await db.from("media").select("id").order("display_order");
-  const list = data ?? [];
+  const read = await db.from("media").select("id").order("display_order");
+  await failIf(read, "Couldn't move that item. Please try again.");
+  const list = read.data ?? [];
   const i = list.findIndex((r) => r.id === id), j = i + dir;
   if (i < 0 || j < 0 || j >= list.length) return;
   [list[i], list[j]] = [list[j], list[i]];
-  await Promise.all(list.map((r, k) => db.from("media").update({ display_order: k + 1 }).eq("id", r.id)));
+  await failIf(await Promise.all(list.map((r, k) => db.from("media").update({ display_order: k + 1 }).eq("id", r.id))),
+    "Couldn't save the new order. Refresh the page to check it.");
   refresh();
 }
 
@@ -59,6 +64,7 @@ export async function deleteMedia(id: string) {
   const db = await owner();
   const { data } = await db.from("media").select("path").eq("id", id).maybeSingle();
   const { error } = await db.from("media").delete().eq("id", id);
+  await failIf({ error }, "Couldn't delete that item. Please try again.");
   if (!error && data?.path) await db.storage.from("media").remove([data.path]);
   refresh();
 }
