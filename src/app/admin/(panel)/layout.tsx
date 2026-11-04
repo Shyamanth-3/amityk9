@@ -1,6 +1,8 @@
+import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { currentAdmin, sessionDb } from "@/lib/supabase";
 import { signOut } from "../actions";
+import Notice from "./Notice";
 import s from "../admin.module.css";
 
 // Per-request: depends on the signed-in user, never prerendered.
@@ -35,7 +37,7 @@ export default async function Panel({ children }: { children: React.ReactNode })
         </nav>
         <form action={signOut} className={s.who}><span>{admin.user.email}</span><button>Sign out</button></form>
       </header>
-      <main className={s.main}>{children}</main>
+      <main className={s.main}><Suspense><Notice /></Suspense>{children}</main>
     </div>
   );
 }
