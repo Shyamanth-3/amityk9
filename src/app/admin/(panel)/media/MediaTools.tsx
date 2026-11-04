@@ -3,15 +3,22 @@ import { useActionState, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import PhotoPicker from "../../PhotoPicker";
 import { addPhotos, addVideo, deleteMedia } from "./actions";
+import { discardUploads } from "../../uploads";
 import s from "../../admin.module.css";
 
 export function GalleryUpload() {
   const router = useRouter();
   const [, start] = useTransition();
-  return (
-    <PhotoPicker folder="gallery" label="+ Upload photos"
-      onUploaded={(list) => start(async () => { await addPhotos(list.map((u) => u.path)); router.refresh(); })} />
-  );
+  const save = async (paths: string[]) => {
+    try {
+      await addPhotos(paths); // if recording fails the server deletes the uploads and shows the error
+    } catch {
+      // the request itself failed: clean up; the server keeps any photo that did get recorded
+      await discardUploads(paths).catch(() => {});
+    }
+    router.refresh();
+  };
+  return <PhotoPicker folder="gallery" label="+ Upload photos" onUploaded={(list) => start(() => save(list.map((u) => u.path)))} />;
 }
 
 export function VideoForm() {
