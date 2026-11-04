@@ -13,6 +13,9 @@ export default function ServiceForm({ service }: { service?: Service }) {
   const [slugTouched, setSlugTouched] = useState(Boolean(service));
   const [slug, setSlug] = useState(service?.slug ?? "");
   const [enquiryOnly, setEnquiryOnly] = useState(service?.enquiry_only ?? false);
+  // Kept in state so ticking "Enquiry only" (which hides the inputs) never loses them.
+  const [priceFrom, setPriceFrom] = useState(service?.price_from != null ? String(service.price_from) : "");
+  const [duration, setDuration] = useState(service?.duration ?? "");
   const [pkgs, setPkgs] = useState<Package[]>(service?.packages?.length ? service.packages : []);
   const [photos, setPhotos] = useState<Photo[]>(service?.images ?? []);
 
@@ -72,13 +75,21 @@ export default function ServiceForm({ service }: { service?: Service }) {
       <section className={s.section}>
         <h2>Price and packages</h2>
         <label className={s.check}><input type="checkbox" name="enquiry_only" checked={enquiryOnly} onChange={(e) => setEnquiryOnly(e.target.checked)} />Enquiry only: show “Contact for pricing” instead of a price</label>
-        {!enquiryOnly && (
+        {enquiryOnly ? (
+          <>
+            <input type="hidden" name="price_from" value={priceFrom} />
+            <input type="hidden" name="duration" value={duration} />
+          </>
+        ) : (
           <div className={s.row}>
-            <label className={s.field}><span>Starting price (₹ a month)</span><input name="price_from" type="number" min={0} defaultValue={service?.price_from ?? ""} /></label>
-            <label className={s.field}><span>Duration</span><input name="duration" maxLength={80} defaultValue={service?.duration} placeholder="e.g. About 30 min per walk" /></label>
+            <label className={s.field}><span>Starting price (₹ a month)</span>
+              <input name="price_from" type="number" min={0} value={priceFrom} onChange={(e) => setPriceFrom(e.target.value)} />
+            </label>
+            <label className={s.field}><span>Duration</span>
+              <input name="duration" maxLength={80} value={duration} onChange={(e) => setDuration(e.target.value)} placeholder="e.g. About 30 min per walk" />
+            </label>
           </div>
         )}
-        {enquiryOnly && <input type="hidden" name="duration" value={service?.duration ?? ""} />}
         {pkgs.map((p, i) => (
           <div key={i} className={s.pkg}>
             <label className={s.field}><span>Package</span><input value={p.name} onChange={(e) => setPkg(i, "name", e.target.value)} placeholder="Gold" /></label>
