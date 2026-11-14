@@ -50,7 +50,7 @@ export default function ServiceForm({ service }: { service?: Service }) {
           </label>
           <label className={s.field}><span>Web address</span>
             <input name="slug" maxLength={60} value={slug} onChange={(e) => { setSlugTouched(true); setSlug(e.target.value); }} />
-            <small>amityk9.vercel.app/services#{slug || "…"}</small>
+            <small>www.amityk9.in/services#{slug || "…"}</small>
           </label>
         </div>
         <label className={s.field}><span>Short summary</span><input name="summary" maxLength={300} defaultValue={service?.summary} placeholder="One line shown on the services page" /></label>

@@ -1,5 +1,5 @@
-// Single source of truth for business facts. Switch SITE_URL to the real domain once it's connected in Vercel.
-export const SITE_URL = "https://amityk9.vercel.app";
+// Single source of truth for business facts. SITE_URL is the live domain: canonical links, sitemap, robots and social previews all build from it.
+export const SITE_URL = "https://www.amityk9.in";
 export const NAME = "AmityK9";
 export const PHONE = "+919347692474";
 export const PHONE_DISPLAY = "93476 92474";
